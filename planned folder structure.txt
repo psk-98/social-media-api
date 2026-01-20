@@ -1,0 +1,63 @@
+app/
+  main.py
+
+  core/
+    config.py
+    security.py
+    deps.py
+
+  db/
+    session.py
+    base.py
+    migrations/            # alembic
+
+  modules/
+    auth/
+      router.py
+      schemas.py
+      service.py
+
+    users/
+      router.py
+      schemas.py
+      model.py
+      repository.py
+      service.py
+
+    posts/
+      router.py
+      schemas.py
+      model.py
+      repository.py
+      service.py
+
+    social/
+      router.py            # follows, blocks, mutes
+      schemas.py
+      models.py
+      repository.py
+      service.py
+
+    interactions/
+      router.py            # likes, comments, bookmarks
+      schemas.py
+      models.py
+      repository.py
+      service.py
+
+    feed/
+      router.py
+      schemas.py
+      service.py
+
+    notifications/
+      router.py
+      schemas.py
+      model.py
+      repository.py
+      service.py
+
+  shared/
+    pagination.py
+    exceptions.py
+    response.py
