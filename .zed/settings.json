@@ -1,0 +1,9 @@
+{
+  "python": {
+    "interpreter": ".venv/bin/python",
+    "analysis": {
+      "venvPath": ".",
+      "venv": ".venv",
+    },
+  },
+}

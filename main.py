@@ -1,6 +1,12 @@
-def main():
-    print("Hello from social-media-api!")
+from fastapi import FastAPI
 
+from core.db import engine
+from models import Base
+from routers import auth, posts
 
-if __name__ == "__main__":
-    main()
+app = FastAPI()
+
+Base.metadata.create_all(engine)
+
+app.include_router(posts.router)
+app.include_router(auth.router)

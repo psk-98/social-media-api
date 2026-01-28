@@ -8,9 +8,10 @@ services:
     ports:
       - "6543:5432"
     environment:
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
+      POSTGRES_DB: social_media_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/18
 
 volumes:
   postgres_data:
