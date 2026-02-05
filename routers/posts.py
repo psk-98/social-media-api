@@ -9,14 +9,14 @@ router = APIRouter(prefix="/post", tags=["posts"])
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-def posts(user: user_dependency, db: db_dependency, post_id: int = Path(gt=0)):
-    posts = db.query(Post).filter(Post.user_id == user.get("user_id")).all()
+def posts(auth_user: user_dependency, db: db_dependency):
+    posts = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).all()
     return posts
 
 
 @router.get("/{post_id}", status_code=status.HTTP_200_OK)
-def get(user: user_dependency, db: db_dependency, post_id: int = Path(gt=0)):
-    post = db.query(Post).filter(Post.user_id == user.get("user_id")).first()
+def get(auth_user: user_dependency, db: db_dependency):
+    post = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).first()
     return post
 
 
@@ -25,11 +25,11 @@ def create_post(request: CreatePostRequest, user: user_dependency, db: db_depend
     if user is None:
         raise HTTPException(status_code=401, detail="Auth failed")
 
-    post_model = Post(**request.model_dump(), user_id=user.get("user_id"))
+    post = Post(**request.model_dump(), user_id=user.get("user_id"))
 
-    db.add(post_model)
+    db.add(post)
     db.commit()
-    return post_model
+    return post
 
 
 @router.put(
@@ -37,17 +37,17 @@ def create_post(request: CreatePostRequest, user: user_dependency, db: db_depend
 )
 def update_post(
     request: UpdatePostRequest,
-    user: user_dependency,
+    auth_user: user_dependency,
     db: db_dependency,
     post_id: int = Path(gt=0),
 ):
-    if user is None:
+    if auth_user is None:
         raise HTTPException(status_code=401, detail="Auth failed")
 
     post_model = (
         db.query(Post)
         .filter(Post.id == post_id)
-        .filter(Post.user_id == user.get("user_id"))
+        .filter(Post.user_id == auth_user.get("user_id"))
         .first()
     )
 
@@ -63,25 +63,25 @@ def update_post(
 
 @router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(
-    user: user_dependency,
+    auth_user: user_dependency,
     db: db_dependency,
     post_id: int = Path(gt=0),
 ):
-    if user is None:
+    if auth_user is None:
         raise HTTPException(status_code=401, detail="Auth failed")
 
-    post_model = (
+    post = (
         db.query(Post)
         .filter(Post.id == post_id)
-        .filter(Post.user_id == user.get("user_id"))
+        .filter(Post.user_id == auth_user.get("user_id"))
         .first()
     )
 
-    if post_model is None:
+    if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
 
     db.query(Post).filter(Post.id == post_id).filter(
-        Post.user_id == user.get("user_id")
+        Post.user_id == auth_user.get("user_id")
     ).delete()
     db.commit()
-    return post_model
+    return post
