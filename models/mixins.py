@@ -1,8 +1,17 @@
 from datetime import datetime
 
-from pydantic import Field
+from sqlalchemy import Column, DateTime
 
 
 class TimestampMixin:
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    created_at = Column(
+        DateTime(),
+        default=datetime.now,
+        nullable=False,
+    )
+    updated_at = Column(
+        DateTime(),
+        default=datetime.now,
+        onupdate=datetime.now,
+        nullable=False,
+    )
