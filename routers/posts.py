@@ -3,29 +3,31 @@ from starlette import status
 
 from core.dependencies import db_dependency, user_dependency
 from models import Post
-from schemas.posts import CreatePostRequest, PostRespoonse, UpdatePostRequest
+from schemas.posts import CreatePostRequest, PostResponse, UpdatePostRequest
 
 router = APIRouter(prefix="/post", tags=["posts"])
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("/", response_model=PostResponse, status_code=status.HTTP_200_OK)
 def posts(auth_user: user_dependency, db: db_dependency):
     posts = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).all()
     return posts
 
 
-@router.get("/{post_id}", status_code=status.HTTP_200_OK)
+@router.get("/{post_id}", response_model=PostResponse, status_code=status.HTTP_200_OK)
 def get(auth_user: user_dependency, db: db_dependency):
     post = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).first()
     return post
 
 
-@router.post("/", response_model=PostRespoonse, status_code=status.HTTP_201_CREATED)
-def create_post(request: CreatePostRequest, user: user_dependency, db: db_dependency):
-    if user is None:
+@router.post("/", response_model=PostResponse, status_code=status.HTTP_201_CREATED)
+def create_post(
+    request: CreatePostRequest, auth_user: user_dependency, db: db_dependency
+):
+    if auth_user is None:
         raise HTTPException(status_code=401, detail="Auth failed")
 
-    post = Post(**request.model_dump(), user_id=user.get("user_id"))
+    post = Post(**request.model_dump(), user_id=auth_user.get("user_id"))
 
     db.add(post)
     db.commit()
@@ -33,7 +35,7 @@ def create_post(request: CreatePostRequest, user: user_dependency, db: db_depend
 
 
 @router.put(
-    "/{post_id}", response_model=PostRespoonse, status_code=status.HTTP_202_ACCEPTED
+    "/{post_id}", response_model=PostResponse, status_code=status.HTTP_202_ACCEPTED
 )
 def update_post(
     request: UpdatePostRequest,
