@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 from schemas.likes import LikeRequest
@@ -15,6 +17,6 @@ class PostResponse(BaseModel):
     id: int
     content: str
     user_id: int
-    likes: LikeRequest
+    likes: List[LikeRequest]
 
     model_config = {"from_attributes": True}

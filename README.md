@@ -30,3 +30,7 @@ uv run fastapi deploy
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com)
 - [FastAPI Cloud](https://fastapicloud.com)
+
+To run seeder for test data
+
+`uv run python -m core.seeder`
