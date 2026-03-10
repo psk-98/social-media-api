@@ -5,8 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from main import app
-from models import Base
-from models.users import User
+from models import Base, Post, User
 from routers.users import bcrypt_context
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test_db.db"
@@ -54,4 +53,17 @@ def test_user_instance():
     yield user
     with engine.connect() as connection:
         connection.execute(text("DELETE FROM users;"))
+        connection.commit()
+
+
+@pytest.fixture
+def test_post_instance():
+    post = Post(content="This is a test post", user_id=1)
+
+    db = TestingSessionLocal()
+    db.add(post)
+    db.commit()
+    yield post
+    with engine.connect() as connection:
+        connection.execute(text("DELETE FROM posts;"))
         connection.commit()

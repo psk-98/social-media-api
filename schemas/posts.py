@@ -17,6 +17,6 @@ class PostResponse(BaseModel):
     id: int
     content: str
     user_id: int
-    likes: List[LikeRequest]
+    # likes: List[LikeRequest]
 
-    model_config = {"from_attributes": True}
+    # model_config = {"from_attributes": True}
