@@ -29,7 +29,7 @@ async def change_password(
     user = db.query(User).filter(User.id == auth_user.get("user_id")).first()
 
     if not bcrypt_context.verify(request.password, user.password):
-        raise HTTPException(status_code=401, detail="Error on password change")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     user.password = bcrypt_context.hash(request.password)
     db.commit()
