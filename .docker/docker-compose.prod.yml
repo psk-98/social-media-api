@@ -1,0 +1,34 @@
+networks:
+  social-network:
+    driver: bridge
+
+services:
+  app:
+    build:
+      args:
+        port: 8000
+      dockerfile: ./.docker/app/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - social-network
+  db:
+    container_name: social-media-db
+    image: postgres:15
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "6543:5432"
+    environment:
+      POSTGRES_DB: social_media_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/18
+
+volumes:
+  postgres_data:
+    driver: local
