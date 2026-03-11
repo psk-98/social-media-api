@@ -15,8 +15,12 @@ def posts(auth_user: user_dependency, db: db_dependency):
 
 
 @router.get("/{post_id}", response_model=PostResponse, status_code=status.HTTP_200_OK)
-def get(auth_user: user_dependency, db: db_dependency):
-    post = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).first()
+def get(db: db_dependency, post_id: int = Path(gt=0)):
+    post = db.query(Post).filter(Post.id == post_id).first()
+
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post not found")
+
     return post
 
 

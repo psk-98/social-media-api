@@ -1,25 +1,32 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from enum import Enum as PyEnum
+
+from sqlalchemy import Boolean, Column, Enum, Integer, String
 from sqlalchemy.orm import Mapped, relationship
 
 from models.base import Base
 from models.mixins import TimestampMixin
 
 
+class UserRole(str, PyEnum):
+    admin = "admin"
+    user = "user"
+
+
 class User(TimestampMixin, Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True)
-    username = Column(String, unique=True)
-    password = Column(String)
+    email = Column(String, unique=True, nullable=False)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
-    role = Column(String)
+    role = Column(Enum(UserRole), nullable=False, default=UserRole.user)
 
     # one user has many posts
-    posts: Mapped[list["Post"]] = relationship(
-        "Post",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
+    # posts: Mapped[list["Post"]] = relationship(
+    #     "Post",
+    #     back_populates="user",
+    #     cascade="all, delete-orphan",
+    # )
 
-    likes: Mapped[list["Like"]] = relationship("Like")
+    # likes: Mapped[list["Like"]] = relationship("Like")
