@@ -29,11 +29,6 @@ def authenticate_user(username: str, password: str, db):
     return user
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
-def users(db: db_dependency):
-    return db.query(User).all()
-
-
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(request: CreateUserRequest, db: db_dependency):
     request_data = request.model_dump()

@@ -1,4 +1,8 @@
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, ConfigDict
+
+from schemas.likes import LikeRequest
 
 
 class CreatePostRequest(BaseModel):
@@ -9,9 +13,10 @@ class UpdatePostRequest(BaseModel):
     content: str
 
 
-class PostRespoonse(BaseModel):
+class PostResponse(BaseModel):
     id: int
     content: str
     user_id: int
+    # likes: List[LikeRequest]
 
-    model_config = {"from_attributes": True}
+    # model_config = {"from_attributes": True}

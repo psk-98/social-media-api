@@ -8,12 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
-.env
 
-
-docker-compose.yml
-docker-compose.yaml
-
+.zed
 .DS_Store
-
 *.db
+README.md
+.git
+test

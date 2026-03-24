@@ -1,0 +1,6 @@
+finish prod docker setup using nginx as load balancer and have a few app instances running
+improve .env and core setup
+make follows function and create tests
+make notification functional and create tests
+make make messages and message threads functional and create tests
+start clearly defining relationship on models, schemas
