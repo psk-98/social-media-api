@@ -12,11 +12,28 @@ services:
     networks:
       - social-network
     volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
-  app:
+      - ./.docker/nginx:/etc/nginx/conf.d
+  app-1:
+    container_name: social-app-instance-1
     build:
-      args:
-        port: 8000
+      dockerfile: ./.docker/app/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - social-network
+  app-2:
+    container_name: social-app-instance-2
+    build:
+      dockerfile: ./.docker/app/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - social-network
+  app-3:
+    container_name: social-app-instance-3
+    build:
       dockerfile: ./.docker/app/Dockerfile
     restart: unless-stopped
     depends_on:
