@@ -1,36 +1,21 @@
-# testing
+# Social Media API
 
-A project created with FastAPI CLI.
+This project is mainly for learning [fastapi](https://fastapi.tiangolo.com), while also playing around [docker](https://www.docker.com/) and [nginx](https://nginx.org/) to improve the devops skills. 
 
-## Quick Start
+## Development workflow
 
-### Start the development server
+#Postgresql
 
 ```bash
+cp ./.docker/docker-compose.dev.yml docker-compose.yml
+cp example.dev.env .env
+docker-compose up -d
+uv sync
 uv run fastapi dev
 ```
 
 Visit http://localhost:8000
 
-### Deploy to FastAPI Cloud
-
-> FastAPI Cloud is currently in private beta. Join the waitlist at https://fastapicloud.com
-
-```bash
-uv run fastapi login
-uv run fastapi deploy
-```
-
-## Project Structure
-
-- `main.py` - Your FastAPI application
-- `pyproject.toml` - Project dependencies
-
-## Learn More
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com)
-- [FastAPI Cloud](https://fastapicloud.com)
-
-To run seeder for test data
+There's also a seeder AI create you run it using the below
 
 `uv run python -m core.seeder`
