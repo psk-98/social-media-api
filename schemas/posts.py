@@ -8,9 +8,13 @@ from schemas.likes import LikeRequest
 class CreatePostRequest(BaseModel):
     content: str
 
+    model_config = {"json_schema_extra": {"example": {"content": "the post content"}}}
+
 
 class UpdatePostRequest(BaseModel):
     content: str
+
+    model_config = {"json_schema_extra": {"example": {"content": "the post content"}}}
 
 
 class PostResponse(BaseModel):
