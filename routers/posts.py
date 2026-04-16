@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException, Path
 from starlette import status
 
@@ -8,7 +10,7 @@ from schemas.posts import CreatePostRequest, PostResponse, UpdatePostRequest
 router = APIRouter(prefix="/post", tags=["posts"])
 
 
-@router.get("/", response_model=PostResponse, status_code=status.HTTP_200_OK)
+@router.get("/", response_model=List[PostResponse], status_code=status.HTTP_200_OK)
 def posts(auth_user: user_dependency, db: db_dependency):
     posts = db.query(Post).filter(Post.user_id == auth_user.get("user_id")).all()
     return posts

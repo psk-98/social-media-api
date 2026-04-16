@@ -1,12 +1,19 @@
-from pydantic import BaseModel
+from enum import Enum as PyEnum
+
+from pydantic import BaseModel, EmailStr
+
+
+class UserRole(str, PyEnum):
+    user = "user"
+    admin = "admin"
 
 
 class CreateUserRequest(BaseModel):
-    email: str
+    email: EmailStr
     username: str
     password: str
     is_active: bool
-    role: str
+    role: UserRole
 
 
 class CurrentUser(BaseModel):
